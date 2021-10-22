@@ -13,13 +13,11 @@ namespace ShopsPages.Models
 
         public ShopsContext(DbContextOptions<ShopsContext> options) : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ShopsPagesDB;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,14 +26,15 @@ namespace ShopsPages.Models
                 new Shop { ShopId = 1, Address = "Minsk", WorkingHours = "24/7" },
                 new Shop { ShopId = 2, Address = "Vitebsk", WorkingHours = "12:00-22:00" },
                 new Shop { ShopId = 3, Address = "Gomel", WorkingHours = "9:00-20:00" }
-                );
+            );
             
             modelBuilder.Entity<Product>(
                 entity =>
                 {
                     entity.HasOne(p => p.Shop)
                                 .WithMany(s => s.Products)
-                                .HasForeignKey("ShopId").IsRequired();
+                                .HasForeignKey("ShopId").IsRequired()
+                                .OnDelete(DeleteBehavior.Cascade);
                 }
             );
 
@@ -46,7 +45,7 @@ namespace ShopsPages.Models
                 new Product { ProductId = 4, ShopId = 2, Name = "Pencil case", Description = "Red and big" },
                 new Product { ProductId = 5, ShopId = 3, Name = "Fork", Description = "Sharp and silver" },
                 new Product { ProductId = 6, ShopId = 3, Name = "Spoon", Description = "Practical and gold" }
-                );
+            );
         }
     }
 }

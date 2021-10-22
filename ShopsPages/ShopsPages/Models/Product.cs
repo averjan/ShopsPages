@@ -9,6 +9,7 @@ namespace ShopsPages.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int? ShopId { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public Shop Shop { get; set; }
     }
 }

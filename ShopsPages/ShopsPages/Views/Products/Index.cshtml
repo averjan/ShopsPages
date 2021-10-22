@@ -12,10 +12,10 @@
 }
 
 <h3>Shops</h3>
-<table>
+<table id="product-table" class="product-table-class">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>Number</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -31,3 +31,76 @@
         }
     </tbody>
 </table>
+
+<div>
+
+<form method="post" id="add-form">
+    <input type="text" name="Name" />
+    <input type="text" name="Description" />
+    <input type="hidden" name="ShopId" value="@Model.ShopId" />
+    <input type="submit" value="Add" />
+</form>
+
+
+
+</div>
+
+
+<style>
+    td {border: 1px #DDD solid; padding: 5px; cursor: pointer;}
+
+.selected {
+    background-color: brown;
+    color: #FFF;
+}
+</style>
+
+@section scripts
+{
+<script>
+    var table = document.getElementById('product-table');
+    var activeProduct = -1;
+    var model;
+
+    $(document).on("click", ".product-table-class tbody tr", function(event) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        $(this).addClass('selected').siblings().removeClass('selected');    
+        var value=$(this).find('th:first').html().toString();
+        var id = parseInt(value);
+        var name=$(this).find('th').eq(1).html().toString();
+        var description=$(this).find('th').eq(2).html().toString();
+        activeProduct = id;
+        console.log("ind click");
+    });
+
+
+    function RemoveActiveProduct() {
+
+    }
+
+
+    function addRowToProductTable(product) {
+        var id = $(table).find('tbody').find('tr').length + 1;
+        $(table).find('tbody').append(`<tr><td>${id}</td><td>${product.name}</td><td>${product.description}</td></tr>`);
+    }
+
+
+    document.getElementById("add-form").onsubmit = () => {
+        var formData = new FormData(document.getElementById("add-form"));
+        fetch('add', {
+            method: 'post',
+            body: new URLSearchParams(formData)
+        })
+        .then((result) => {
+            return result.text();
+        })
+        .then ((data) => {
+            console.log(data);
+            $(".product-table-class").replaceWith(data);
+        });
+
+        return false;
+    }
+</script>
+}

@@ -25,11 +25,12 @@ namespace ShopsPages
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             string configuration = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
             services.AddDbContext<ShopsContext>(options => options.UseSqlServer(configuration));
             services.AddControllersWithViews();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
