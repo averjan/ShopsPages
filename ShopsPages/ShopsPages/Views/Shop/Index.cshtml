@@ -1,0 +1,18 @@
+﻿@using ShopsPages.Models
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<Shop>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>В списке @Model.Count элемента</h3>
+@foreach(var shop in Model)
+{
+    <p>@shop.Address</p>
+    <p>@shop.WorkingHours</p>
+}
