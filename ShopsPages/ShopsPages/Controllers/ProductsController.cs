@@ -44,12 +44,15 @@ namespace ShopsPages.Controllers
             return PartialView("TableView", activeShop);
         }
 
-        public ActionResult Remove(int shopId, int productNumber)
+        [HttpDelete]
+        [Route("products/remove/{productId?}")]
+        public ActionResult Remove(int? productId)
         {
-            var removeElement = this._db.Shops.ElementAt(shopId)?.Products?.ElementAt(productNumber);
+            var removeElement = this._db.Products?.FirstOrDefault(p => p.ProductId == productId);
             if (removeElement != null)
             {
                 this._db.Products?.Remove(removeElement);
+                this._db.SaveChanges();
                 return Ok();
             }
 

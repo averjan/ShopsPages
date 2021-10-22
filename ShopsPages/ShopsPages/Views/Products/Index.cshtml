@@ -12,25 +12,7 @@
 }
 
 <h3>Shops</h3>
-<table id="product-table" class="product-table-class">
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 1; i<=Model?.Products.Count; i++)
-        {
-            <tr>
-                <th>@i</th>
-                <th>@Model.Products.ElementAt(i - 1).Name</th>
-                <th>@Model.Products.ElementAt(i - 1).Description</th>
-            </tr>
-        }
-    </tbody>
-</table>
+@await Html.PartialAsync("TableView", Model)
 
 <div>
 
@@ -41,7 +23,7 @@
     <input type="submit" value="Add" />
 </form>
 
-
+<button id='remove-btn' onclick="RemoveActiveProduct">Remove</button>
 
 </div>
 
@@ -53,14 +35,21 @@
     background-color: brown;
     color: #FFF;
 }
+
+.id-column-hidden {
+    display: none;
+}
 </style>
 
 @section scripts
 {
 <script>
+    var removeButton = document.getElementById('remove-btn');
     var table = document.getElementById('product-table');
     var activeProduct = -1;
     var model;
+
+    $(removeButton).on("click", () => RemoveActiveProduct());
 
     $(document).on("click", ".product-table-class tbody tr", function(event) {
         event.stopPropagation();
@@ -70,13 +59,31 @@
         var id = parseInt(value);
         var name=$(this).find('th').eq(1).html().toString();
         var description=$(this).find('th').eq(2).html().toString();
-        activeProduct = id;
-        console.log("ind click");
+        var dbId=$(this).find('th').eq(3).html().toString();
+        activeProduct = dbId;
     });
 
 
-    function RemoveActiveProduct() {
+    function RemoveActiveTableItem() {
+        $(".product-table-class tbody").find(".selected").remove();
+        console.log(activeProduct);
+        activeProduct = -1;
+    }
 
+
+    function RemoveActiveProduct() {
+        console.log(activeProduct);
+        if (activeProduct < 1) {
+            return;
+        }
+
+        fetch(`remove/${activeProduct}`, {
+            method: 'delete',
+        })
+        .then((result) => result.text())
+        .then(() => {
+            RemoveActiveTableItem();
+        });
     }
 
 
@@ -96,7 +103,6 @@
             return result.text();
         })
         .then ((data) => {
-            console.log(data);
             $(".product-table-class").replaceWith(data);
         });
 
