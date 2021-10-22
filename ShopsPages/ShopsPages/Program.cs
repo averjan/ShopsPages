@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ShopsPages.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+string configuration = ConfigurationExtensions.GetConnectionString(builder.Configuration, "DefaultConnection");
+builder.Services.AddDbContext<ShopsContext>(options => options.UseSqlServer(configuration));
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
