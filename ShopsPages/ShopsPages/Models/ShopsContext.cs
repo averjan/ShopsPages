@@ -4,9 +4,14 @@ namespace ShopsPages.Models
 {
     public class ShopsContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Shop> Shops { get; set; }
-        public ShopsContext()
+        public DbSet<Product>? Products { get; set; }
+        public DbSet<Shop>? Shops { get; set; }
+        public ShopsContext() : base()
+        {
+            Database.EnsureCreated();
+        }
+
+        public ShopsContext(DbContextOptions<ShopsContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
