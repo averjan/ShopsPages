@@ -10,9 +10,26 @@
     ViewBag.Title = "Index";
 }
 
-<h3>В списке @Model.Count элемента</h3>
-@foreach(var shop in Model)
-{
-    <p>@shop.Address</p>
-    <p>@shop.WorkingHours</p>
-}
+<h3>Shops</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Address</th>
+            <th>Working Hours</th>
+            <th>Shop Page</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @for (int i = 1; i<=Model.Count; i++)
+        {
+            <tr>
+                <th>@i</th>
+                <th>@Model[i - 1].Address</th>
+                <th>@Model[i - 1].WorkingHours</th>
+                <th><a asp-controller="Products" asp-action="Index" asp-route-id="@Model[i - 1].Id">Products</a></th>
+            </tr>
+        }
+    </tbody>
+</table>
