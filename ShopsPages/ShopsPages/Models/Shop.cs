@@ -5,11 +5,9 @@ namespace ShopsPages.Models
 {
     public class Shop
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ShopId { get; set; }
         public string Address { get; set; } = "";
         public string WorkingHours { get; set; } = "";
-        public List<Product> Products { get; set; } = new List<Product>();
+        public ICollection<Product> Products { get; set; }
     }
 }
