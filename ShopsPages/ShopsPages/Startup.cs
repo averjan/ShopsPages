@@ -32,7 +32,7 @@ namespace ShopsPages
             services.AddDbContext<ShopsContext>(options => options.UseSqlServer(configuration));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews();
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -63,3 +63,18 @@ body {
   white-space: nowrap;
   line-height: 60px;
 }
+
+td { cursor: pointer;}
+
+.selected {
+    background-color: brown;
+    color: #FFF;
+}
+
+.selected:hover {
+  color: #FFF !important;
+}
+
+.id-column-hidden {
+    display: none;
+}

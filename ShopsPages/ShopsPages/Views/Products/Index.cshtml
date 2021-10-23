@@ -1,17 +1,10 @@
 ﻿@using ShopsPages.Models
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
 @model Shop
 
-@{
-    ViewBag.Title = "Index";
-}
 
-<h3>Shops</h3>
+<h1 class="display-3">Products</h1>
+
 @await Html.PartialAsync("TableView", Model)
 
 <div>
@@ -36,19 +29,6 @@
         <input type="submit" value="Edit" />
     </form>
 </div>
-
-<style>
-    td {border: 1px #DDD solid; padding: 5px; cursor: pointer;}
-
-.selected {
-    background-color: brown;
-    color: #FFF;
-}
-
-.id-column-hidden {
-    display: none;
-}
-</style>
 
 @section scripts
 {

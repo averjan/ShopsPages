@@ -1,35 +1,30 @@
 ﻿@using ShopsPages.Models
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
 @model List<Shop>
-@{
-    ViewBag.Title = "Index";
-}
 
-<h3>Shops</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Address</th>
-            <th>Working Hours</th>
-            <th>Shop Page</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        @for (int i = 1; i<=Model.Count; i++)
-        {
+
+<h1 class="display-3">Shops</h3>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-dark">
             <tr>
-                <th>@i</th>
-                <th>@Model[i - 1].Address</th>
-                <th>@Model[i - 1].WorkingHours</th>
-                <th><a asp-controller="Products" asp-action="Index" asp-route-shopId="@Model[i - 1].ShopId">Products</a></th>
+                <th>Id</th>
+                <th>Address</th>
+                <th>Working Hours</th>
+                <th>Shop Page</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            
+            @for (int i = 1; i<=Model.Count; i++)
+            {
+                <tr>
+                    <th>@i</th>
+                    <th>@Model[i - 1].Address</th>
+                    <th>@Model[i - 1].WorkingHours</th>
+                    <th><a class="link-dark" asp-controller="Products" asp-action="Index" asp-route-shopId="@Model[i - 1].ShopId">Products</a></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

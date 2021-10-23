@@ -1,24 +1,25 @@
 ﻿@using ShopsPages.Models
 @model Shop
 
-<table class="product-table-class">
-
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 1; i<=Model?.Products.Count; i++)
-        {
+<div class="table-responsive">
+    <table class="product-table-class table table-hover">
+        <thead class="table-dark">
             <tr>
-                <th>@i</th>
-                <th>@Model.Products.ElementAt(i - 1).Name</th>
-                <th>@Model.Products.ElementAt(i - 1).Description</th>
-                <th class="id-column-hidden">@Model.Products.ElementAt(i-1).ProductId</th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @for (int i = 1; i<=Model?.Products.Count; i++)
+            {
+                <tr>
+                    <th>@i</th>
+                    <th>@Model.Products.ElementAt(i - 1).Name</th>
+                    <th>@Model.Products.ElementAt(i - 1).Description</th>
+                    <th class="id-column-hidden">@Model.Products.ElementAt(i-1).ProductId</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
