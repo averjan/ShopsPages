@@ -1,16 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopsPages.DAL;
 using ShopsPages.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShopsPages
 {
@@ -31,15 +21,14 @@ namespace ShopsPages
             string configuration = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
             services.AddDbContext<ShopsContext>(options => options.UseSqlServer(configuration));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddControllersWithViews();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseStatusCodePagesWithReExecute("/Shop/Error/{0}");
+            app.UseExceptionHandler("/Shop/Error");
             if (!env.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
@@ -52,7 +41,6 @@ namespace ShopsPages
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Shop}/{action=Index}");

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShopsPages.DAL;
-using ShopsPages.Models;
 
 namespace ShopsPages.Controllers
 {
@@ -18,6 +16,14 @@ namespace ShopsPages.Controllers
         public ActionResult Index()
         {
             return View(this._unitOfWork.Shops.GetAll().ToList());
+        }
+
+       
+        [Route("Shop/Error/{statusCode?}")]
+        public ActionResult Error(int? statusCode = 500)
+        {
+            ViewBag.StatusCode = statusCode.ToString();
+            return View("Error");
         }
     }
 }
