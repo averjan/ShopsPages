@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopsPages.DAL;
 using ShopsPages.Models;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,9 @@ namespace ShopsPages
 
             string configuration = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
             services.AddDbContext<ShopsContext>(options => options.UseSqlServer(configuration));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews();
-
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,7 +56,7 @@ namespace ShopsPages
                 // endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}");
+                    pattern: "{controller=Shop}/{action=Index}");
             });
         }
     }

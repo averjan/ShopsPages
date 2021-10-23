@@ -1,26 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShopsPages.DAL;
 using ShopsPages.Models;
 
 namespace ShopsPages.Controllers
 {
     public class ProductsController : Controller
     {
-        private ShopsContext _db;
+        private IUnitOfWork _unitOfWork;
 
-        public ProductsController(ShopsContext context)
+        public ProductsController(IUnitOfWork unitOfWork)
         {
-            this._db = context;
+            this._unitOfWork = unitOfWork;
         }
 
         [Route("products/id")]
         public IActionResult Index(int shopId)
         {
-            var shops = this._db.Shops.Include(s => s.Products);
-            var activeShop = shops.FirstOrDefault(s => s.ShopId == shopId);
+            var activeShop = this._unitOfWork.Shops.GetById(shopId);
             if (activeShop != null)
             {
-                
                 return View(activeShop);
             }
 
@@ -30,13 +29,12 @@ namespace ShopsPages.Controllers
         [HttpPost]
         public ActionResult Add(Product product)
         {
-            this._db.Products?.Add(product);
-            var shops = this._db.Shops.Include(s => s.Products);
-            var activeShop = shops.FirstOrDefault(s => s.ShopId == product.ShopId);
+            this._unitOfWork.Products.Add(product);
+            var activeShop = this._unitOfWork.Shops.GetById(product.ShopId);
 
             if (activeShop != null)
             {
-                this._db.SaveChanges();
+                this._unitOfWork.Complete();
                 return PartialView("TableView", activeShop);
             }
 
@@ -48,11 +46,9 @@ namespace ShopsPages.Controllers
         [Route("products/remove/{productId?}")]
         public ActionResult Remove(int? productId)
         {
-            var removeElement = this._db.Products?.FirstOrDefault(p => p.ProductId == productId);
-            if (removeElement != null)
+            if (this._unitOfWork.Products.Delete(productId))
             {
-                this._db.Products?.Remove(removeElement);
-                this._db.SaveChanges();
+                this._unitOfWork.Complete();
                 return Ok();
             }
 
@@ -62,20 +58,10 @@ namespace ShopsPages.Controllers
         [HttpPut]
         public ActionResult Edit(Product newProduct)
         {
-            var entity = this._db.Products?.FirstOrDefault(p => p.ProductId == newProduct.ProductId);
-            if (entity == null)
+            if (this._unitOfWork.Products.Update(newProduct))
             {
-                return NotFound();
-            }
-
-            this._db.Entry(entity).CurrentValues.SetValues(newProduct);
-
-            var shops = this._db.Shops.Include(s => s.Products);
-            var activeShop = shops.FirstOrDefault(s => s.ShopId == newProduct.ShopId);
-
-            if (activeShop != null)
-            {
-                this._db.SaveChanges();
+                var activeShop = this._unitOfWork.Shops.GetById(newProduct.ShopId);
+                this._unitOfWork.Complete();
                 return PartialView("TableView", activeShop);
             }
 
