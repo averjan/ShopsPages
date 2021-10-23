@@ -27,6 +27,15 @@
 
 </div>
 
+<div>
+    <form method="put" id="edit-form">
+        <input type="text" name="Name" />
+        <input type="text" name="Description" />
+        <input type="hidden" name="ShopId" value="@Model.ShopId" />
+        <input type="hidden" name="ProductId" />
+        <input type="submit" value="Edit" />
+    </form>
+</div>
 
 <style>
     td {border: 1px #DDD solid; padding: 5px; cursor: pointer;}
@@ -50,18 +59,47 @@
     var model;
 
     $(removeButton).on("click", () => RemoveActiveProduct());
+    document.getElementById("edit-form").onsubmit = () => editProduct();
 
     $(document).on("click", ".product-table-class tbody tr", function(event) {
         event.stopPropagation();
         event.stopImmediatePropagation();
-        $(this).addClass('selected').siblings().removeClass('selected');    
-        var value=$(this).find('th:first').html().toString();
-        var id = parseInt(value);
+        $(this).addClass('selected').siblings().removeClass('selected');
         var name=$(this).find('th').eq(1).html().toString();
         var description=$(this).find('th').eq(2).html().toString();
         var dbId=$(this).find('th').eq(3).html().toString();
+        UpdateEditForm(name, description, dbId);
         activeProduct = dbId;
     });
+
+    function UpdateEditForm(name, description, id) {
+        console.log(id);
+        $("#edit-form input[name='Name']").val(name);
+        $("#edit-form input[name='ProductId']").val(id);
+        $("#edit-form input[name='Description']").val(description);
+    }
+
+
+    function editProduct() {
+        if (activeProduct < 1) {
+            return;
+        }
+
+        var formData = new FormData(document.getElementById("edit-form"));
+        fetch('edit', {
+            method: 'put',
+            body: new URLSearchParams(formData)
+        })
+        .then((result) => {
+            return result.text();
+        })
+        .then ((data) => {
+            $(".product-table-class").replaceWith(data);
+            activeProduct = -1;
+        });
+
+        return false;
+    }
 
 
     function RemoveActiveTableItem() {

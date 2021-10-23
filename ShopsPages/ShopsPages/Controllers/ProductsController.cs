@@ -31,17 +31,17 @@ namespace ShopsPages.Controllers
         public ActionResult Add(Product product)
         {
             this._db.Products?.Add(product);
-            this._db.SaveChanges();
             var shops = this._db.Shops.Include(s => s.Products);
             var activeShop = shops.FirstOrDefault(s => s.ShopId == product.ShopId);
 
             if (activeShop != null)
             {
+                this._db.SaveChanges();
                 return PartialView("TableView", activeShop);
             }
 
 
-            return PartialView("TableView", activeShop);
+            return NotFound();
         }
 
         [HttpDelete]
@@ -59,6 +59,7 @@ namespace ShopsPages.Controllers
             return NotFound();
         }
 
+        [HttpPut]
         public ActionResult Edit(Product newProduct)
         {
             var entity = this._db.Products?.FirstOrDefault(p => p.ProductId == newProduct.ProductId);
@@ -68,7 +69,17 @@ namespace ShopsPages.Controllers
             }
 
             this._db.Entry(entity).CurrentValues.SetValues(newProduct);
-            return Ok();
+
+            var shops = this._db.Shops.Include(s => s.Products);
+            var activeShop = shops.FirstOrDefault(s => s.ShopId == newProduct.ShopId);
+
+            if (activeShop != null)
+            {
+                this._db.SaveChanges();
+                return PartialView("TableView", activeShop);
+            }
+
+            return NotFound();
         }
     }
 }
