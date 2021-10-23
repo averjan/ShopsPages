@@ -13,8 +13,11 @@ namespace ShopsPages.DAL
         {
             try
             {
-                var shops = this.dbSet.Include(s => s.Products);
-                var activeShop = shops.FirstOrDefault(s => s.ShopId == id);
+                var activeShop = this.dbSet
+                            .Include(s => s.Products)
+                            .FirstOrDefault(s => s.ShopId == id);
+
+                activeShop.Products = activeShop.Products.OrderBy(p => p.ProductId).ToList();
                 return activeShop;
             }
             catch (Exception)

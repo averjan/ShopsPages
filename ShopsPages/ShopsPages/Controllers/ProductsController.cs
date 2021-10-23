@@ -30,11 +30,11 @@ namespace ShopsPages.Controllers
         public ActionResult Add(Product product)
         {
             this._unitOfWork.Products.Add(product);
+            this._unitOfWork.Complete();
             var activeShop = this._unitOfWork.Shops.GetById(product.ShopId);
 
             if (activeShop != null)
             {
-                this._unitOfWork.Complete();
                 return PartialView("TableView", activeShop);
             }
 

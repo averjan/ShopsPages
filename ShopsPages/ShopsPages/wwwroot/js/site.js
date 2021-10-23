@@ -4,7 +4,10 @@
 // Write your JavaScript code.
 
 $("#remove-btn").on("click", () => RemoveActiveProduct());
-document.getElementById("edit-form").onsubmit = () => editProduct();
+$("#edit-form").submit(function(event) {
+    event.preventDefault();
+    editProduct();
+});
 
 $(document).on("click", ".product-table-class tbody tr", function(event) {
     event.stopPropagation();
