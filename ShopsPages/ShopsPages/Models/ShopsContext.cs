@@ -23,9 +23,9 @@ namespace ShopsPages.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Shop>().HasData(
-                new Shop { ShopId = 1, Address = "Minsk", WorkingHours = "24/7" },
-                new Shop { ShopId = 2, Address = "Vitebsk", WorkingHours = "12:00-22:00" },
-                new Shop { ShopId = 3, Address = "Gomel", WorkingHours = "9:00-20:00" }
+                new Shop { ShopId = 1, Name = "Fix Price", Address = "Minsk", WorkingHours = "24/7" },
+                new Shop { ShopId = 2, Name = "Gippo", Address = "Vitebsk", WorkingHours = "12:00-22:00" },
+                new Shop { ShopId = 3, Name = "Evroopt", Address = "Gomel", WorkingHours = "9:00-20:00" }
             );
             
             modelBuilder.Entity<Product>(

@@ -9,6 +9,7 @@
         <thead class="table-dark">
             <tr>
                 <th>Id</th>
+                <th>Name</th>
                 <th>Address</th>
                 <th>Working Hours</th>
                 <th>Shop Page</th>
@@ -20,6 +21,7 @@
             {
                 <tr>
                     <th>@i</th>
+                    <th>@Model[i - 1].Name</th>
                     <th>@Model[i - 1].Address</th>
                     <th>@Model[i - 1].WorkingHours</th>
                     <th><a class="link-dark" asp-controller="Products" asp-action="Index" asp-route-shopId="@Model[i - 1].ShopId">Products</a></th>
