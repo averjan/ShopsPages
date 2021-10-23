@@ -64,6 +64,35 @@ body {
   line-height: 60px;
 }
 
+#all-content {
+  width: 100%;
+  display: flex;
+  padding: 0%;
+}
+
+#table-container {
+  flex-grow: 1;
+}
+
+#crud-panel {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-basis: fit-content;
+}
+
+.crud-form {
+  flex-basis: fit-content;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.form-group, form .btn {
+  margin: 10px;
+}
+
 td { cursor: pointer;}
 
 .selected {
